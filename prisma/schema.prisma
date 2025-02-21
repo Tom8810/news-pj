@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,11 +7,107 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  title     String
-  content   String   @db.Text
-  locale    String   @default("en-US")
+// ja
+model news_ja_datekey {
+  id    Int      @id @default(autoincrement())
+  date  DateTime
+  news  news_ja[]
+}
+
+model news_ja {
+  id           Int      @id @default(autoincrement())
+  datekey_id   Int
+  title        String
+  text         String   @db.Text
+  citation_url String?
+
+  // date テーブルへのリレーション
+  datekey      news_ja_datekey @relation(fields: [datekey_id], references: [id])
+  // 多対多のリレーションシップ
+  news_tags    news_tag_ja[]
+}
+
+model tags_ja {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?  @db.Text
+  news_tags   news_tag_ja[]
+}
+
+model news_tag_ja {
+  news_id Int
+  tag_id  Int
+  news    news_ja @relation(fields: [news_id], references: [id])
+  tag     tags_ja @relation(fields: [tag_id], references: [id])
+  @@id([news_id, tag_id])
+}
+
+// en
+model news_en_datekey {
+  id    Int      @id @default(autoincrement())
+  date  DateTime
+  news  news_en[]
+}
+
+model news_en {
+  id           Int      @id @default(autoincrement())
+  datekey_id   Int
+  title        String
+  text         String   @db.Text
+  citation_url String?
+
+  // date テーブルへのリレーション
+  datekey      news_en_datekey @relation(fields: [datekey_id], references: [id])
+  // 多対多のリレーションシップ
+  news_tags    news_tag_en[]
+}
+
+model tags_en {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?  @db.Text
+  news_tags   news_tag_en[]
+}
+
+model news_tag_en {
+  news_id Int
+  tag_id  Int
+  news    news_en @relation(fields: [news_id], references: [id])
+  tag     tags_en @relation(fields: [tag_id], references: [id])
+  @@id([news_id, tag_id])
+}
+
+// cn
+model news_cn_datekey {
+  id    Int      @id @default(autoincrement())
+  date  DateTime
+  news  news_cn[]
+}
+
+model news_cn {
+  id           Int      @id @default(autoincrement())
+  datekey_id   Int
+  title        String
+  text         String   @db.Text
+  citation_url String?
+
+  // date テーブルへのリレーション
+  datekey      news_cn_datekey @relation(fields: [datekey_id], references: [id])
+  // 多対多のリレーションシップ
+  news_tags    news_tag_cn[]
+}
+
+model tags_cn {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?  @db.Text
+  news_tags   news_tag_cn[]
+}
+
+model news_tag_cn {
+  news_id Int
+  tag_id  Int
+  news    news_cn @relation(fields: [news_id], references: [id])
+  tag     tags_cn @relation(fields: [tag_id], references: [id])
+  @@id([news_id, tag_id])
 }

@@ -1,0 +1,35 @@
+{
+  "list": {
+    "title": "新闻列表",
+    "news_item_title": "的人工智能新闻",
+    "not_found_message": "对不起，没有这样的新闻。",
+    "pagination_next": "下一页",
+    "pagination_previous": "上一页"
+  },
+  "detail": {
+    "title": "{date}的人工智能新闻",
+    "not_found_message": "这个日期没有新闻文章。",
+    "retrieve_error_message": "获取新闻文章时发生错误。请再试一次。",
+    "back_to_list": "返回列表"
+  },
+  "search_box": {
+    "placeholder": "按标题搜索...",
+    "reset": "重置",
+    "search": "搜索"
+  },
+  "side_bar": {
+    "menu": "菜单",
+    "open_menu": "打开菜单",
+    "close_menu": "关闭菜单",
+    "search": "搜索"
+  },
+  "meta": {
+    "newsPageTitle": "【附详细解析的最新AI新闻】{formattedDate}的热点话题：「{heading1}」等",
+    "newsPageDescription": "{formattedDate}的AI新闻:{descriptionStr}。包含术语解析，助您轻松掌握最新AI动态。"
+  },
+  "not_found": {
+    "title": "页面未找到",
+    "description": "您所寻找的页面不存在，或者URL可能有误。",
+    "back_home": "返回首页"
+  }
+}

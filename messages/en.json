@@ -1,0 +1,35 @@
+{
+  "list": {
+    "title": "News List",
+    "news_item_title": "AI news on ",
+    "not_found_message": "Sorry, but such news does not exist.",
+    "pagination_next": "Next",
+    "pagination_previous": "Previous"
+  },
+  "detail": {
+    "title": "AI News for {date}",
+    "not_found_message": "There are no news articles for this date.",
+    "retrieve_error_message": "An error occurred while retrieving the news article. Please try again.",
+    "back_to_list": "Back to List"
+  },
+  "search_box": {
+    "placeholder": "Search by title...",
+    "reset": "Reset",
+    "search": "Search"
+  },
+  "side_bar": {
+    "menu": "Menu",
+    "open_menu": "Open Menu",
+    "close_menu": "Close Menu",
+    "search": "Search"
+  },
+  "meta": {
+    "newsPageTitle": "【Latest AI News with Explanations】Top Topics on {formattedDate}: \"{heading1}\" and More",
+    "newsPageDescription": "AI news on {formattedDate}: {descriptionStr}. Includes explanations for technical terms to make the latest AI trends easy to understand."
+  },
+  "not_found": {
+    "title": "Page not found",
+    "description": "The page you are looking for doesn't exist or the URL might be incorrect.",
+    "back_home": "Back to home"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "list": {
+    "title": "ニュース一覧",
+    "news_item_title": "のAIニュース",
+    "not_found_message": "ごめんなさい、そんなニュースは存在しません",
+    "pagination_next": "次へ",
+    "pagination_previous": "前へ"
+  },
+  "detail": {
+    "title": "{date}のAIニュース",
+    "not_found_message": "この日付のニュース記事はありません。",
+    "retrieve_error_message": "ニュース記事の取得中にエラーが発生しました。再度お試しください。",
+    "back_to_list": "一覧に戻る"
+  },
+  "search_box": {
+    "placeholder": "タイトルを入力...",
+    "reset": "リセット",
+    "search": "検索"
+  },
+  "side_bar": {
+    "menu": "メニュー",
+    "open_menu": "メニューを開く",
+    "close_menu": "メニューを閉じる",
+    "search": "検索"
+  },
+  "meta": {
+    "newsPageTitle": "【解説付き最新AIニュース】{formattedDate}の重要トピック: 「{heading1}」ほか",
+    "newsPageDescription": "{formattedDate}のAIニュース: {descriptionStr}。専門用語には解説付きで、最新のAI動向を分かりやすくお届け。"
+  },
+  "not_found": {
+    "title": "ページが見つかりません",
+    "description": "お探しのページは存在しないか、URLが間違っている可能性があります。",
+    "back_home": "ホームに戻る"
+  }
+}
