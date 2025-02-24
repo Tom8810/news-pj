@@ -27,6 +27,8 @@
     "text": "All news content is created by AI."
   },
   "meta": {
+    "newsListTitle": "Latest AI News - Past 10 Days",
+    "newsListDescription": "Stay updated with the latest AI news. Fresh insights and key AI trends every day.",
     "newsPageTitle": "【Latest AI News with Explanations】Top Topics on {formattedDate}: \"{heading1}\" and More",
     "newsPageDescription": "AI news on {formattedDate}: {descriptionStr}. Includes explanations for technical terms to make the latest AI trends easy to understand."
   },

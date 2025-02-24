@@ -27,6 +27,8 @@
     "text": "全てのニュースコンテンツはAIが作成しています。"
   },
   "meta": {
+    "newsListTitle": "最新AIニュース一覧 - 過去10日間",
+    "newsListDescription": "最新AIニュースを毎日更新。重要なAI動向とトピックをわかりやすく解説。",
     "newsPageTitle": "【解説付き最新AIニュース】{formattedDate}の重要トピック: 「{heading1}」ほか",
     "newsPageDescription": "{formattedDate}のAIニュース: {descriptionStr}。専門用語には解説付きで、最新のAI動向を分かりやすくお届け。"
   },

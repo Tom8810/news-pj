@@ -27,6 +27,8 @@
     "text": "所有新闻内容均由人工智能创建。"
   },
   "meta": {
+    "newsListTitle": "最新人工智能新闻 - 过去10天",
+    "newsListDescription": "在过去10天内获取最新的人工智能新闻。每日更新AI动态和重要趋势。",
     "newsPageTitle": "【附详细解析的最新AI新闻】{formattedDate}的热点话题：「{heading1}」等",
     "newsPageDescription": "{formattedDate}的AI新闻:{descriptionStr}。包含术语解析，助您轻松掌握最新AI动态。"
   },
