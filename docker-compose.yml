@@ -1,20 +1,20 @@
 services:
   db:
-    image: mysql:8.0
+    image: postgres:15
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: prisma
-      MYSQL_DATABASE: myapp
+      POSTGRES_USER: prisma
+      POSTGRES_PASSWORD: prisma
+      POSTGRES_DB: myapp
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
+      - postgres-data:/var/lib/postgresql/data
     healthcheck:
-      test:
-        ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pprisma"]
+      test: ["CMD-SHELL", "pg_isready -U prisma"]
       interval: 10s
       timeout: 5s
       retries: 5
 
 volumes:
-  mysql-data:
+  postgres-data:
