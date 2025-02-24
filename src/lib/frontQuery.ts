@@ -12,7 +12,7 @@ export const getNewsList = async (
 ): Promise<{ news: DailyNews[]; totalPages: number }> => {
   try {
     const response = await fetch(
-      `${BASE_URL}/api?mode=list&locale=${locale}&title=${encodeURIComponent(
+      `${BASE_URL}/api/get?mode=list&locale=${locale}&title=${encodeURIComponent(
         title
       )}&page=${page}&limit=${limit}`
     );
@@ -45,7 +45,7 @@ export const getNewsByDate = async (
 ): Promise<DailyNews> => {
   try {
     const response = await fetch(
-      `${BASE_URL}/api?mode=date&locale=${locale}&date=${encodeURIComponent(
+      `${BASE_URL}/api/get?mode=date&locale=${locale}&date=${encodeURIComponent(
         date.toISOString().split("T")[0]
       )}`
     );
@@ -69,7 +69,7 @@ export const getNewsByDate = async (
 
 export const getDates = async (): Promise<string[]> => {
   try {
-    const response = await fetch(`${BASE_URL}/api?mode=date_only`);
+    const response = await fetch(`${BASE_URL}/api/get?mode=date_only`);
 
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

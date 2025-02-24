@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { getNewsByDate } from "@/lib/frontQuery";
 import { Locale } from "@/lib/types";
 import { formatLocaleDate } from "@/lib/utils";
@@ -9,16 +9,13 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 
 type Props = {
-  params: PromiseLike<{
+  params: Promise<{
     date: string;
     locale: Locale;
   }>;
 };
 
-export async function generateMetadata(
-  { params }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { date, locale } = await params;
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateRegex.test(date)) {

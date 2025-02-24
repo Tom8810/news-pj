@@ -7,16 +7,22 @@ type Props = {
   date: string;
   article: News;
   locale: string;
+  index: number;
 };
 
-export const DetailArticleContainer = ({ date, article, locale }: Props) => {
+export const DetailArticleContainer = ({
+  date,
+  article,
+  locale,
+  index,
+}: Props) => {
   return (
     <article
       key={article.id}
       className="bg-gray-100 rounded-xl p-6 shadow-md flex flex-col md:flex-row gap-6"
     >
       <ArticleImage
-        src="/mock_image.png"
+        src={`/${new Date(date).toISOString().split("T")[0]}_${index}.webp`}
         alt={article.title}
         className="md:w-1/3 "
       />

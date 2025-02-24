@@ -1,4 +1,4 @@
-import { DailyNews, News } from "../../../lib/types";
+import { DailyNews } from "../../../lib/types";
 import { ErrorDisplay } from "./ErrorDisplay";
 import { ListNewsContainer } from "./ListNewsContainer";
 import { LoadingDisplay } from "./LoadingDisplay";

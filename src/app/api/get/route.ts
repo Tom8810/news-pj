@@ -19,6 +19,12 @@ const globalRateLimit = new LRUCache<
   ttl: 60 * 1000, // 60秒間のリクエストを制限
 });
 
+const allowedIPs = [
+  process.env.API_ALLOW_IP_1,
+  process.env.API_ALLOW_IP_2,
+  process.env.API_ALLOW_IP_3,
+];
+
 export async function GET(req: NextRequest): Promise<Response> {
   // タイムアウト：5秒
   const controller = new AbortController();
@@ -49,6 +55,11 @@ export async function GET(req: NextRequest): Promise<Response> {
   });
 
   const ip = req.headers.get("x-forwarded-for") || "unknown";
+
+  if (!ip || !allowedIPs.includes(ip)) {
+    console.log(ip);
+    return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  }
 
   if (ip !== "unknown") {
     const ipRequestInfo = rateLimit.get(ip) || { count: 0, timestamp: now };
@@ -84,7 +95,7 @@ export async function GET(req: NextRequest): Promise<Response> {
     if (mode === "list") {
       let totalDays: number;
       let paginatedDates: { date: Date; id: number }[] = [];
-      let groupedNews: DailyNews[] = [];
+      const groupedNews: DailyNews[] = [];
 
       if (locale === "ja") {
         // 該当するニュースの日数を取得

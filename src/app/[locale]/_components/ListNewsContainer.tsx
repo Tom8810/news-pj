@@ -12,11 +12,21 @@ export const ListNewsContainer = ({ dailyNews }: Props) => {
   const t = useTranslations("list");
   const locale = useLocale();
 
-  const formatDateForUrl = (date: Date) => date.toISOString().split("T")[0];
+  const formatDate = new Date(dailyNews.date).toISOString().split("T")[0];
+
+  const renderTitle = (title: string) => {
+    const parts = title.split(/\*\*(.*?)\*\*/g);
+    return parts.map((part, index) => {
+      if (index % 2 === 1) {
+        return <strong key={index}>{part}</strong>; // ダブルアスタリスクで囲まれた部分を強調
+      }
+      return part; // それ以外の部分はそのまま返す
+    });
+  };
 
   return (
     <Link
-      href={`/${formatDateForUrl(new Date(dailyNews.date))}`}
+      href={`/${formatDate}`}
       aria-label={`${t("news_item_title")} - ${formatLocaleDate(
         new Date(dailyNews.date.toString()),
         locale
@@ -26,7 +36,7 @@ export const ListNewsContainer = ({ dailyNews }: Props) => {
     >
       <article className="border border-gray-300 p-4 rounded-lg shadow-md h-full bg-gray-100">
         <div className="aspect-video">
-          <ArticleImage src="/mock_image.png" alt={"mock image"} />
+          <ArticleImage src={`/${formatDate}_1.webp`} alt={"article image"} />
         </div>
         <h2
           className={cn(
@@ -45,7 +55,7 @@ export const ListNewsContainer = ({ dailyNews }: Props) => {
               key={news.id}
               className="p-3 bg-white rounded-md shadow-sm hover:bg-gray-50 transition-colors duration-200"
             >
-              <span className="text-gray-700">{news.title}</span>
+              <span className="text-gray-700">{renderTitle(news.title)}</span>
             </div>
           ))}
         </div>

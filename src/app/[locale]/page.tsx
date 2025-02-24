@@ -30,22 +30,22 @@ export default function Home() {
         const data = await getNewsList(title, locale, page, 5);
         setNews(data.news);
         setTotalPages(data.totalPages);
-      } catch (error: any) {
+      } catch {
         console.error("News fetching error:", error);
-        setError(error.message || "Failed to fetch news");
+        setError("Failed to fetch news");
         setNews([]);
       } finally {
         setIsLoading(false);
       }
     },
-    [setNews, setTotalPages, setIsLoading, setError]
+    [setNews, setTotalPages, setIsLoading, setError, error]
   );
 
   useEffect(() => {
     const titleParam = searchParams.get("title") || "";
     setSearchTerm(titleParam);
     fetchNews(titleParam, locale, page);
-  }, [searchParams, page, fetchNews]);
+  }, [searchParams, page, fetchNews, locale]);
 
   const updateSearchTerm = useCallback((newTerm: string) => {
     setSearchTerm(newTerm);

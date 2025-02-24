@@ -13,11 +13,12 @@ export async function NewsArticlePage({ dailyNews, locale }: Props) {
     <div className="flex flex-col w-full">
       <NewsDetailHeader date={dailyNews.date} />
       <main className="w-full mx-auto px-6 py-8 space-y-10">
-        {dailyNews.news.map((article) => (
+        {dailyNews.news.map((article, index) => (
           <DetailArticleContainer
             date={dailyNews.date}
             article={article}
             locale={locale}
+            index={index + 1}
             key={article.id}
           />
         ))}

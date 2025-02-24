@@ -43,7 +43,7 @@ export default async function NewsDatePage({ params }: Props) {
       return <NotFoundDisplay date={date} locale={locale} />;
 
     return <NewsArticlePage dailyNews={dailyNews} locale={locale} />;
-  } catch (error) {
+  } catch {
     return <ErrorDisplay date={date} locale={locale} />;
   }
 }
