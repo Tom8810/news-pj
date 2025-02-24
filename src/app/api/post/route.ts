@@ -17,7 +17,7 @@ const globalRateLimit = new LRUCache<
   ttl: 60 * 1000,
 });
 
-const allowedIPs = [process.env.API_ALLOW_IP_1, process.env.API_ALLOW_IP_2];
+// const allowedIPs = [process.env.API_ALLOW_IP_1, process.env.API_ALLOW_IP_2];
 
 const SECRET_KEY = process.env.JWT_SECRET || "default_secret";
 
@@ -61,9 +61,9 @@ export async function POST(req: NextRequest): Promise<Response> {
 
   const ip = req.headers.get("x-forwarded-for") || "unknown";
 
-  if (!ip || !allowedIPs.includes(ip)) {
-    return NextResponse.json({ error: "Access denied" }, { status: 403 });
-  }
+  // if (!ip || !allowedIPs.includes(ip)) {
+  //   return NextResponse.json({ error: "Access denied" }, { status: 403 });
+  // }
 
   if (ip !== "unknown") {
     const ipRequestInfo = rateLimit.get(ip) || { count: 0, timestamp: now };
