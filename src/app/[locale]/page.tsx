@@ -9,7 +9,6 @@ import { SearchBox } from "@/components/searchBox";
 import { cn, sansLocaledClassName } from "@/lib/utils";
 import { getNewsList } from "@/lib/frontQuery";
 import Pagination from "./_components/Pagination";
-import bcrypt from "bcryptjs";
 
 export default function Home() {
   const [news, setNews] = useState<DailyNews[]>([]);
@@ -29,8 +28,6 @@ export default function Home() {
 
       try {
         const data = await getNewsList(title, locale, page, 5);
-        const hash = await bcrypt.hash("ueLz.C,GAp4B", 10);
-        console.log(hash);
         setNews(data.news);
         setTotalPages(data.totalPages);
       } catch {
