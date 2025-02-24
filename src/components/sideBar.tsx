@@ -10,9 +10,10 @@ import { getDates } from "@/lib/frontQuery";
 
 type Props = {
   whatFor: "mobile" | "pc";
+  onPageTransition?: () => void;
 };
 
-export default function Sidebar({ whatFor }: Props) {
+export default function Sidebar({ whatFor, onPageTransition }: Props) {
   const router = useRouter();
   const [openYear, setOpenYear] = useState<number | null>(null);
   const [openMonth, setOpenMonth] = useState<number | null>(null);
@@ -61,6 +62,7 @@ export default function Sidebar({ whatFor }: Props) {
       day
     ).padStart(2, "0")}`;
     router.push(`/${formattedDate}`);
+    onPageTransition && onPageTransition();
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -69,6 +71,7 @@ export default function Sidebar({ whatFor }: Props) {
 
     const encodedQuery = encodeURIComponent(searchQuery);
     router.push(`/?title=${encodedQuery}`);
+    onPageTransition && onPageTransition();
   };
 
   return (

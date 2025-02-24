@@ -62,7 +62,10 @@ export const Header = () => {
                 <FaTimes size={24} />
               </button>
             </div>
-            <Sidebar whatFor="mobile" />
+            <Sidebar
+              whatFor="mobile"
+              onPageTransition={() => setIsOpen(false)}
+            />
           </motion.div>
         )}
       </AnimatePresence>

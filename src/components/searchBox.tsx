@@ -41,7 +41,7 @@ export const SearchBox = ({ searchTerm, setSearchTerm }: Props) => {
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
         className={cn(
-          "flex-grow p-2 rounded-md bg-white border border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 min-w-24",
+          "flex-grow p-2 rounded-md bg-white border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-gray-500 min-w-24",
           sansLocaledClassName(locale as Locale)
         )}
       />
