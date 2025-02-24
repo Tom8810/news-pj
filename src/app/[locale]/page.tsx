@@ -9,6 +9,7 @@ import { SearchBox } from "@/components/searchBox";
 import { cn, sansLocaledClassName } from "@/lib/utils";
 import { getNewsList } from "@/lib/frontQuery";
 import Pagination from "./_components/Pagination";
+import { NewsContentFooter } from "@/components/newsContentFooter";
 
 export default function Home() {
   const [news, setNews] = useState<DailyNews[]>([]);
@@ -27,7 +28,7 @@ export default function Home() {
       setError(null);
 
       try {
-        const data = await getNewsList(title, locale, page, 5);
+        const data = await getNewsList(title, locale, page, 10);
         setNews(data.news);
         setTotalPages(data.totalPages);
       } catch {
@@ -52,29 +53,32 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="bg-white h-full w-full p-6">
-      <div className="flex justify-between items-center mb-6 gap-8 px-6 flex-col lg:flex-row">
-        <h1
-          className={cn(
-            "text-3xl font-semibold text-gray-800 whitespace-nowrap",
-            sansLocaledClassName(locale as Locale)
-          )}
-        >
-          {t("title")}
-        </h1>
-        <SearchBox searchTerm={searchTerm} setSearchTerm={updateSearchTerm} />
+    <div className="bg-white h-full w-full ">
+      <div className="bg-white h-full w-full p-6">
+        <div className="flex justify-between items-center mb-6 gap-8 px-6 flex-col lg:flex-row">
+          <h1
+            className={cn(
+              "text-3xl font-semibold text-gray-800 whitespace-nowrap",
+              sansLocaledClassName(locale as Locale)
+            )}
+          >
+            {t("title")}
+          </h1>
+          <SearchBox searchTerm={searchTerm} setSearchTerm={updateSearchTerm} />
+        </div>
+
+        <NewsList news={news} isLoading={isLoading} error={error} />
+
+        {/* ページネーション */}
+        {totalPages > 1 && (
+          <Pagination
+            currentPage={page}
+            totalPages={totalPages}
+            onPageChange={setPage}
+          />
+        )}
       </div>
-
-      <NewsList news={news} isLoading={isLoading} error={error} />
-
-      {/* ページネーション */}
-      {totalPages > 1 && (
-        <Pagination
-          currentPage={page}
-          totalPages={totalPages}
-          onPageChange={setPage}
-        />
-      )}
+      <NewsContentFooter />
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { DailyNews } from "@/lib/types";
 import React from "react";
 import NewsDetailHeader from "./NewsDetailHeader";
 import { DetailArticleContainer } from "./articleContainer/DetailArticleContainer";
+import { NewsContentFooter } from "@/components/newsContentFooter";
 
 type Props = {
   dailyNews: DailyNews;
@@ -23,6 +24,7 @@ export async function NewsArticlePage({ dailyNews, locale }: Props) {
           />
         ))}
       </main>
+      <NewsContentFooter />
     </div>
   );
 }

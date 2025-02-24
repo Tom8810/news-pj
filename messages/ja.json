@@ -23,6 +23,9 @@
     "close_menu": "メニューを閉じる",
     "search": "検索"
   },
+  "footer": {
+    "text": "全てのニュースコンテンツはAIが作成しています。"
+  },
   "meta": {
     "newsPageTitle": "【解説付き最新AIニュース】{formattedDate}の重要トピック: 「{heading1}」ほか",
     "newsPageDescription": "{formattedDate}のAIニュース: {descriptionStr}。専門用語には解説付きで、最新のAI動向を分かりやすくお届け。"

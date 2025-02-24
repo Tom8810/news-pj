@@ -23,6 +23,9 @@
     "close_menu": "关闭菜单",
     "search": "搜索"
   },
+  "footer": {
+    "text": "所有新闻内容均由人工智能创建。"
+  },
   "meta": {
     "newsPageTitle": "【附详细解析的最新AI新闻】{formattedDate}的热点话题：「{heading1}」等",
     "newsPageDescription": "{formattedDate}的AI新闻:{descriptionStr}。包含术语解析，助您轻松掌握最新AI动态。"
