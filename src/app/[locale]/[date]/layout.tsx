@@ -26,8 +26,11 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   // ニュースデータを取得
   const dailyNews = await getNewsByDate(new Date(date), locale);
-  const heading1 = dailyNews?.news?.[0]?.title ?? "";
-  const titles = dailyNews.news.map((news) => news.title);
+  const heading1 =
+    dailyNews?.news?.[0]?.title.replace(/\*\*(.*?)\*\*/g, "$1") ?? "";
+  const titles = dailyNews.news.map((news) =>
+    news.title.replace(/\*\*(.*?)\*\*/g, "$1")
+  );
   const descriptionStr =
     locale === "en"
       ? `\"${titles.join('", "')}\"`
