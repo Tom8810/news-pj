@@ -5,7 +5,7 @@ import { Locale } from "@/lib/types";
 import { formatLocaleDate } from "@/lib/utils";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  return <>{children}</>;
+  return <div className="bg-white">{children}</div>;
 }
 
 type Props = {
