@@ -35,10 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const formattedDate = formatLocaleDate(new Date(date), locale);
 
-  const siteUrl = "https://example.com"; // ここを実際のサイトURLに変更
+  const siteUrl = process.env.NEXT_PUBLIC_BASE_URL_PRD;
   const pageUrl = `${siteUrl}/${locale}/news/${date}`;
 
-  // SEO最適化した title & description
   const title =
     t("newsPageTitle", {
       formattedDate,
