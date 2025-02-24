@@ -11,7 +11,7 @@ export async function NotFoundDisplay({ date, locale }: Props) {
   return (
     <div className="flex flex-col w-full items-center">
       <NewsDetailHeader date={date} />
-      <div className="bg-gray-100 rounded-lg p-6 shadow-md w-fit">
+      <div className="bg-gray-100 rounded-lg p-6 shadow-md w-fit mt-12">
         <p className="text-lg text-gray-700">{t("not_found_message")}</p>
       </div>
     </div>

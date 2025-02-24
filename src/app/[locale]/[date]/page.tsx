@@ -5,29 +5,13 @@ import { NotFoundDisplay } from "./_components/NotFoundDisplay";
 import { ErrorDisplay } from "./_components/ErrorDisplay";
 
 import { Locale } from "@/lib/types";
+
 type Props = {
   params: Promise<{
     date: string;
     locale: Locale;
   }>;
 };
-
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  const dates: { date: string }[] = [];
-  const today = new Date();
-
-  for (let i = -1; i < 7; i++) {
-    const date = new Date(today);
-    date.setDate(date.getDate() - i);
-    dates.push({
-      date: date.toISOString().split("T")[0],
-    });
-  }
-
-  return dates;
-}
 
 export default async function NewsDatePage({ params }: Props) {
   const { date, locale } = await params;
