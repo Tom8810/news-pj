@@ -62,7 +62,9 @@ export default function Sidebar({ whatFor, onPageTransition }: Props) {
       day
     ).padStart(2, "0")}`;
     router.push(`/${formattedDate}`);
-    onPageTransition && onPageTransition();
+    if (onPageTransition) {
+      onPageTransition();
+    }
   };
 
   const handleSearch = (e: React.FormEvent) => {
@@ -71,7 +73,9 @@ export default function Sidebar({ whatFor, onPageTransition }: Props) {
 
     const encodedQuery = encodeURIComponent(searchQuery);
     router.push(`/?title=${encodedQuery}`);
-    onPageTransition && onPageTransition();
+    if (onPageTransition) {
+      onPageTransition();
+    }
   };
 
   return (
