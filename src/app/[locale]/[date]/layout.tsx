@@ -1,8 +1,10 @@
 import { getTranslations } from "next-intl/server";
 import { Metadata } from "next";
-import { getNewsByDate } from "@/lib/frontQuery";
-import { Locale } from "@/lib/types";
+import { DailyNews, Locale } from "@/lib/types";
 import { formatLocaleDate } from "@/lib/utils";
+import { PrismaClient } from "@prisma/client";
+
+const prisma = new PrismaClient();
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return <div className="bg-white">{children}</div>;
@@ -24,8 +26,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
   const t = await getTranslations({ locale, namespace: "meta" });
 
-  // ニュースデータを取得
-  const dailyNews = await getNewsByDate(new Date(date), locale);
+  const dailyNews = await getDailyNews(new Date(date), locale);
+  if (!dailyNews) {
+    return {};
+  }
   const heading1 =
     dailyNews?.news?.[0]?.title.replace(/\*\*(.*?)\*\*/g, "$1") ?? "";
   const titles = dailyNews.news.map((news) =>
@@ -101,3 +105,50 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     },
   };
 }
+
+const getDailyNews = async (
+  date: Date,
+  locale: Locale
+): Promise<DailyNews | undefined> => {
+  const targetDate = new Date(date);
+
+  let dateRecord;
+  let newsList;
+
+  if (locale === "ja") {
+    dateRecord = await prisma.news_ja_datekey.findFirst({
+      where: { date: targetDate },
+    });
+    if (!dateRecord) return undefined;
+    newsList = await prisma.news_ja.findMany({
+      where: { datekey_id: dateRecord.id },
+      orderBy: { id: "desc" },
+      include: { news_tags: { include: { tag: true } } },
+    });
+  } else if (locale === "en") {
+    dateRecord = await prisma.news_en_datekey.findFirst({
+      where: { date: targetDate },
+    });
+    if (!dateRecord) return undefined;
+    newsList = await prisma.news_en.findMany({
+      where: { datekey_id: dateRecord.id },
+      orderBy: { id: "desc" },
+      include: { news_tags: { include: { tag: true } } },
+    });
+  } else {
+    dateRecord = await prisma.news_cn_datekey.findFirst({
+      where: { date: targetDate },
+    });
+    if (!dateRecord) return undefined;
+    newsList = await prisma.news_cn.findMany({
+      where: { datekey_id: dateRecord.id },
+      orderBy: { id: "desc" },
+      include: { news_tags: { include: { tag: true } } },
+    });
+  }
+
+  return {
+    date: targetDate.toISOString().split("T")[0],
+    news: newsList,
+  };
+};

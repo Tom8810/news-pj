@@ -1,18 +1,26 @@
 "use client";
 
-import { useState } from "react";
-import { Link } from "@/i18n/routing";
+import { useEffect, useState } from "react";
+import { Link, usePathname } from "@/i18n/routing";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaBars, FaTimes } from "react-icons/fa";
-import Sidebar from "./sideBar";
-import { useLocale, useTranslations } from "next-intl";
-import { cn, sansLocaledClassName } from "@/lib/utils";
-import { Locale } from "@/lib/types";
+import Sidebar from "./sideBar/sideBar";
+import { useTranslations } from "next-intl";
+import { cn } from "@/lib/utils";
 
-export const Header = () => {
+type Props = {
+  newsDates: Record<number, Record<number, number[]>>;
+  localeClass: string;
+};
+
+export const Header = ({ newsDates, localeClass }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const t = useTranslations("side_bar");
-  const locale = useLocale();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    setIsOpen(false);
+  }, [pathname]);
 
   return (
     <>
@@ -44,12 +52,7 @@ export const Header = () => {
             className="fixed top-0 left-0 w-64 h-full bg-gray-900 text-white shadow-lg z-20"
           >
             <div className="flex justify-between items-center p-4 border-b border-gray-700">
-              <h2
-                className={cn(
-                  "text-lg font-semibold",
-                  sansLocaledClassName(locale as Locale)
-                )}
-              >
+              <h2 className={cn("text-lg font-semibold", localeClass)}>
                 {t("menu")}
               </h2>
               <button
@@ -64,7 +67,8 @@ export const Header = () => {
             </div>
             <Sidebar
               whatFor="mobile"
-              onPageTransition={() => setIsOpen(false)}
+              localeClass={localeClass}
+              newsDates={newsDates}
             />
           </motion.div>
         )}

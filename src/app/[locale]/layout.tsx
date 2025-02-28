@@ -1,8 +1,6 @@
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages, getTranslations } from "next-intl/server";
 import "../globals.css";
-import Sidebar from "@/components/sideBar";
-import { Header } from "@/components/header";
 import {
   notoSans,
   notoSansJP,
@@ -11,6 +9,13 @@ import {
   notoSerifJP,
   notoSerifSC,
 } from "@/lib/font";
+import { Locale } from "@/lib/types";
+import { PrismaClient } from "@prisma/client";
+import { sansLocaledClassName } from "@/lib/utils";
+import { Header } from "@/components/header";
+import Sidebar from "@/components/sideBar/sideBar";
+
+const prisma = new PrismaClient();
 
 export const generateMetadata = async ({
   params,
@@ -54,7 +59,7 @@ export const generateMetadata = async ({
 
 export default async function LocaleLayout(props: {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
+  params: Promise<{ locale: Locale }>;
 }) {
   const { children, params } = props;
   const { locale } = await params;
@@ -65,13 +70,49 @@ export default async function LocaleLayout(props: {
   const localeFontClass =
     locale === "ja" ? "font-ja" : locale === "cn" ? "font-cn" : "font-en";
 
+  const localeClass = sansLocaledClassName(locale);
+  const newsDates: Record<number, Record<number, number[]>> = {};
+  let allDates;
+  if (locale === "ja") {
+    allDates = await prisma.news_ja_datekey.findMany({
+      select: { date: true },
+      orderBy: { date: "desc" },
+    });
+  } else if (locale === "en") {
+    allDates = await prisma.news_en_datekey.findMany({
+      select: { date: true },
+      orderBy: { date: "desc" },
+    });
+  } else {
+    allDates = await prisma.news_cn_datekey.findMany({
+      select: { date: true },
+      orderBy: { date: "desc" },
+    });
+  }
+
+  allDates.forEach(({ date }) => {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = d.getMonth() + 1;
+    const day = d.getDate();
+
+    if (!newsDates[year]) newsDates[year] = {};
+    if (!newsDates[year][month]) newsDates[year][month] = [];
+
+    newsDates[year][month].push(day);
+  });
+
   return (
     <html lang={locale} className={fontClasses}>
       <body className={localeFontClass}>
         <NextIntlClientProvider messages={messages} locale={locale}>
-          <Header />
+          <Header newsDates={newsDates} localeClass={localeClass} />
           <div className="flex pt-16 min-h-screen">
-            <Sidebar whatFor="pc" />
+            <Sidebar
+              whatFor="pc"
+              localeClass={localeClass}
+              newsDates={newsDates}
+            />
             {children}
           </div>
         </NextIntlClientProvider>
