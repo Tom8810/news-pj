@@ -6,12 +6,6 @@ import { PrismaClient } from "@prisma/client";
 import Pagination from "./_components/Pagination";
 import { cn, sansLocaledClassName } from "@/lib/utils";
 
-type Props = {
-  params: Promise<{
-    locale: Locale;
-  }>;
-};
-
 const prisma = new PrismaClient();
 
 async function fetchNews(locale: Locale) {
@@ -20,15 +14,9 @@ async function fetchNews(locale: Locale) {
   const groupedNews: DailyNews[] = [];
 
   if (locale === "ja") {
-    // 該当するニュースの日数を取得
     totalDays = await prisma.news_ja
-      .groupBy({
-        by: ["datekey_id"],
-        _count: true,
-      })
-      .then((res) => res.length); // ヒットした日数を取得
-
-    // ヒットした日付のリストを取得（ページネーション適用）
+      .groupBy({ by: ["datekey_id"], _count: true })
+      .then((res) => res.length);
     paginatedDates = await prisma.news_ja_datekey.findMany({
       where: {
         id: {
@@ -44,31 +32,10 @@ async function fetchNews(locale: Locale) {
       },
       orderBy: { date: "desc" },
     });
-
-    for (const dateRecord of paginatedDates) {
-      const newsForDate = await prisma.news_ja.findMany({
-        where: {
-          datekey_id: dateRecord.id,
-        },
-        orderBy: { id: "desc" },
-        include: { news_tags: { include: { tag: true } } },
-      });
-
-      if (newsForDate.length > 0) {
-        groupedNews.push({
-          date: dateRecord.date.toISOString().split("T")[0],
-          news: newsForDate,
-        });
-      }
-    }
   } else if (locale === "en") {
     totalDays = await prisma.news_en
-      .groupBy({
-        by: ["datekey_id"],
-        _count: true,
-      })
+      .groupBy({ by: ["datekey_id"], _count: true })
       .then((res) => res.length);
-
     paginatedDates = await prisma.news_en_datekey.findMany({
       where: {
         id: {
@@ -84,31 +51,10 @@ async function fetchNews(locale: Locale) {
       },
       orderBy: { date: "desc" },
     });
-
-    for (const dateRecord of paginatedDates) {
-      const newsForDate = await prisma.news_en.findMany({
-        where: {
-          datekey_id: dateRecord.id,
-        },
-        orderBy: { id: "desc" },
-        include: { news_tags: { include: { tag: true } } },
-      });
-
-      if (newsForDate.length > 0) {
-        groupedNews.push({
-          date: dateRecord.date.toISOString().split("T")[0],
-          news: newsForDate,
-        });
-      }
-    }
   } else {
     totalDays = await prisma.news_cn
-      .groupBy({
-        by: ["datekey_id"],
-        _count: true,
-      })
+      .groupBy({ by: ["datekey_id"], _count: true })
       .then((res) => res.length);
-
     paginatedDates = await prisma.news_cn_datekey.findMany({
       where: {
         id: {
@@ -124,22 +70,35 @@ async function fetchNews(locale: Locale) {
       },
       orderBy: { date: "desc" },
     });
+  }
 
-    for (const dateRecord of paginatedDates) {
-      const newsForDate = await prisma.news_cn.findMany({
-        where: {
-          datekey_id: dateRecord.id,
-        },
+  for (const dateRecord of paginatedDates) {
+    let newsForDate;
+    if (locale === "ja") {
+      newsForDate = await prisma.news_ja.findMany({
+        where: { datekey_id: dateRecord.id },
         orderBy: { id: "desc" },
         include: { news_tags: { include: { tag: true } } },
       });
+    } else if (locale === "en") {
+      newsForDate = await prisma.news_en.findMany({
+        where: { datekey_id: dateRecord.id },
+        orderBy: { id: "desc" },
+        include: { news_tags: { include: { tag: true } } },
+      });
+    } else {
+      newsForDate = await prisma.news_cn.findMany({
+        where: { datekey_id: dateRecord.id },
+        orderBy: { id: "desc" },
+        include: { news_tags: { include: { tag: true } } },
+      });
+    }
 
-      if (newsForDate.length > 0) {
-        groupedNews.push({
-          date: dateRecord.date.toISOString().split("T")[0],
-          news: newsForDate,
-        });
-      }
+    if (newsForDate.length > 0) {
+      groupedNews.push({
+        date: dateRecord.date.toISOString().split("T")[0],
+        news: newsForDate,
+      });
     }
   }
 
@@ -152,13 +111,21 @@ async function fetchNews(locale: Locale) {
   };
 }
 
-export default async function Home({ params }: Props) {
+export async function generateStaticParams() {
+  return [{ locale: "ja" }, { locale: "en" }, { locale: "cn" }];
+}
+
+export default async function Home({
+  params,
+}: {
+  params: Promise<{ locale: Locale }>;
+}) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "list" });
   const news = await fetchNews(locale);
 
   return (
-    <div className="bg-white h-full w-full ">
+    <div className="bg-white h-full w-full">
       <div className="bg-white h-full w-full p-6">
         <div className="flex justify-between items-center mb-6 gap-8 px-6 flex-col lg:flex-row">
           <h1
@@ -171,8 +138,6 @@ export default async function Home({ params }: Props) {
           </h1>
         </div>
         <NewsList news={news.news} isLoading={false} error={null} />
-
-        {/* ページネーションが必要な場合にのみ表示 */}
         {news.totalPages > 1 && (
           <Pagination
             currentPage={1}

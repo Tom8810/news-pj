@@ -57,20 +57,24 @@ export const generateMetadata = async ({
   };
 };
 
-export default async function LocaleLayout(props: {
-  children: React.ReactNode;
+export const generateStaticParams = async () => {
+  return [{ locale: "ja" }, { locale: "en" }, { locale: "cn" }];
+};
+
+export default async function LocaleLayout({
+  params,
+  children,
+}: {
   params: Promise<{ locale: Locale }>;
+  children: React.ReactNode;
 }) {
-  const { children, params } = props;
   const { locale } = await params;
   const messages = await getMessages({ locale });
-
   const fontClasses = `${notoSans.className} ${notoSansJP.className} ${notoSansSC.className} ${notoSerif.className} ${notoSerifJP.className} ${notoSerifSC.className}`;
-
   const localeFontClass =
     locale === "ja" ? "font-ja" : locale === "cn" ? "font-cn" : "font-en";
-
   const localeClass = sansLocaledClassName(locale);
+
   const newsDates: Record<number, Record<number, number[]>> = {};
   let allDates;
   if (locale === "ja") {
@@ -101,6 +105,8 @@ export default async function LocaleLayout(props: {
 
     newsDates[year][month].push(day);
   });
+
+  await prisma.$disconnect();
 
   return (
     <html lang={locale} className={fontClasses}>
