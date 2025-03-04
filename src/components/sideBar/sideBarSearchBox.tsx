@@ -19,7 +19,7 @@ export const SideBarSearchBox = ({ localeClass }: Props) => {
     if (!searchQuery.trim()) return;
 
     const encodedQuery = encodeURIComponent(searchQuery);
-    router.push(`/?title=${encodedQuery}`);
+    router.push(`/explore?title=${encodedQuery}&page=1`);
   };
   return (
     <form onSubmit={handleSearch} className="flex items-center space-x-2 mb-4">

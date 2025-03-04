@@ -1,22 +1,28 @@
 "use client";
 
+import { useRouter } from "@/i18n/routing";
 import { Locale } from "@/lib/types";
 import { cn, sansLocaledClassName } from "@/lib/utils";
 import { useLocale, useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
 
 interface PaginationProps {
   currentPage: number;
   totalPages: number;
-  onPageChange: (page: number) => void;
+  onPageChange?: (page: number) => void;
+  isStaticList?: boolean;
 }
 
 export default function Pagination({
   currentPage,
   totalPages,
-  onPageChange,
+  onPageChange = () => {},
+  isStaticList = false,
 }: PaginationProps) {
   const t = useTranslations("list");
   const locale = useLocale();
+  const router = useRouter();
+  const searchParams = useSearchParams();
   return (
     <div
       className={cn(
@@ -25,7 +31,18 @@ export default function Pagination({
       )}
     >
       <button
-        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
+        onClick={() => {
+          if (isStaticList) return;
+
+          const hasTitle = searchParams.has("title"); // title パラメータが存在するか確認
+
+          if (!hasTitle && currentPage === 2) {
+            router.push("/"); // title がなく、currentPage が 2 の場合トップページに遷移
+            return;
+          }
+
+          onPageChange(Math.max(1, currentPage - 1));
+        }}
         disabled={currentPage === 1}
         className={cn(
           "px-4 py-2 rounded-md transition-colors min-w-28 font-bold",
@@ -42,7 +59,13 @@ export default function Pagination({
       </span>
 
       <button
-        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
+        onClick={() => {
+          if (isStaticList) {
+            router.push("/explore?page=2"); // isStaticList が true の場合に遷移
+            return;
+          }
+          onPageChange(Math.min(totalPages, currentPage + 1));
+        }}
         disabled={currentPage === totalPages}
         className={cn(
           "px-4 py-2 rounded-md transition-colors min-w-28 font-bold",

@@ -21,7 +21,7 @@ export const SearchBox = ({ searchTerm, setSearchTerm }: Props) => {
     if (!trimmedQuery) return;
 
     const encodedQuery = encodeURIComponent(trimmedQuery);
-    router.push(`/?title=${encodedQuery}`);
+    router.push(`/explore?title=${encodedQuery}`);
   };
 
   const handleReset = () => {
