@@ -69,7 +69,6 @@ export default function Home() {
 
         <NewsList news={news} isLoading={isLoading} error={error} />
 
-        {/* ページネーション */}
         {totalPages > 1 && (
           <Pagination
             currentPage={page}
