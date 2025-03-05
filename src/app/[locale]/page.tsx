@@ -26,7 +26,7 @@ async function fetchNews(locale: Locale) {
               select: { datekey_id: true },
               distinct: ["datekey_id"],
               orderBy: { datekey_id: "desc" },
-              take: 10,
+              take: 5,
             })
             .then((res) => res.map((r) => r.datekey_id)),
         },
@@ -45,7 +45,7 @@ async function fetchNews(locale: Locale) {
               select: { datekey_id: true },
               distinct: ["datekey_id"],
               orderBy: { datekey_id: "desc" },
-              take: 10,
+              take: 5,
             })
             .then((res) => res.map((r) => r.datekey_id)),
         },
@@ -64,7 +64,7 @@ async function fetchNews(locale: Locale) {
               select: { datekey_id: true },
               distinct: ["datekey_id"],
               orderBy: { datekey_id: "desc" },
-              take: 10,
+              take: 5,
             })
             .then((res) => res.map((r) => r.datekey_id)),
         },
@@ -107,8 +107,8 @@ async function fetchNews(locale: Locale) {
     news: groupedNews,
     total: totalDays,
     page: 1,
-    limit: 10,
-    totalPages: Math.ceil(totalDays / 10),
+    limit: 5,
+    totalPages: Math.ceil(totalDays / 5),
   };
 }
 

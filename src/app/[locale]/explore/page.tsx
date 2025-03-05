@@ -31,7 +31,7 @@ export default function Home() {
       setError(null);
 
       try {
-        const data = await getNewsList(title, locale, page, 10);
+        const data = await getNewsList(title, locale, page, 5);
         setNews(data.news);
         setTotalPages(data.totalPages);
       } catch (error) {
