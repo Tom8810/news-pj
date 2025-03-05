@@ -16,6 +16,7 @@ export const ArticleImage = ({
   index?: number;
 }) => {
   const [isLoading, setIsLoading] = useState(true);
+  const [imgSrc] = useState(src);
 
   return (
     <div className={cn("flex-shrink-0 relative aspect-square", className)}>
@@ -24,7 +25,7 @@ export const ArticleImage = ({
       )}
 
       <Image
-        src={src}
+        src={imgSrc}
         alt={alt}
         width={300}
         height={300}
@@ -33,7 +34,7 @@ export const ArticleImage = ({
         className={`rounded-lg object-cover w-full h-full transition-opacity duration-300 ${
           isLoading ? "opacity-0" : "opacity-100"
         }`}
-        quality={75}
+        quality={50}
         onLoad={() => setIsLoading(false)}
       />
     </div>
