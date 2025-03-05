@@ -6,9 +6,10 @@ import { ArticleImage } from "../../../components/articleImage";
 
 type Props = {
   dailyNews: DailyNews;
+  index: number;
 };
 
-export const ListNewsContainer = ({ dailyNews }: Props) => {
+export const ListNewsContainer = ({ dailyNews, index }: Props) => {
   const t = useTranslations("list");
   const locale = useLocale();
 
@@ -36,7 +37,11 @@ export const ListNewsContainer = ({ dailyNews }: Props) => {
     >
       <article className="border border-gray-300 p-4 rounded-lg shadow-md h-full bg-gray-100">
         <div className="aspect-video">
-          <ArticleImage src={`/${formatDate}_1.webp`} alt={"article image"} />
+          <ArticleImage
+            src={`/${formatDate}_1.webp`}
+            alt={"article image"}
+            index={index}
+          />
         </div>
         <h2
           className={cn(

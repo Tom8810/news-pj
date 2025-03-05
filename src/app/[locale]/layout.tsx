@@ -14,6 +14,8 @@ import { PrismaClient } from "@prisma/client";
 import { sansLocaledClassName } from "@/lib/utils";
 import { Header } from "@/components/header";
 import Sidebar from "@/components/sideBar/sideBar";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/next";
 
 const prisma = new PrismaClient();
 
@@ -120,6 +122,8 @@ export default async function LocaleLayout({
               newsDates={newsDates}
             />
             {children}
+            <SpeedInsights />
+            <Analytics />
           </div>
         </NextIntlClientProvider>
       </body>

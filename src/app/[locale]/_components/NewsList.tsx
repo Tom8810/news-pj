@@ -18,8 +18,12 @@ export default function NewsList({ news, isLoading, error }: Props) {
   return (
     <main className="min-h-screen p-8 w-full bg-white text-gray-900">
       <div className="grid gap-6 w-full grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
-        {news.map((dailyNews) => (
-          <ListNewsContainer dailyNews={dailyNews} key={dailyNews.date} />
+        {news.map((dailyNews, index) => (
+          <ListNewsContainer
+            dailyNews={dailyNews}
+            key={dailyNews.date}
+            index={index}
+          />
         ))}
       </div>
     </main>
