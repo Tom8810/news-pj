@@ -5,6 +5,7 @@ import { NewsContentFooter } from "@/components/newsContentFooter";
 import { PrismaClient } from "@prisma/client";
 import Pagination from "./_components/Pagination";
 import { cn, sansLocaledClassName } from "@/lib/utils";
+import { SearchBox } from "@/components/searchBox";
 
 const prisma = new PrismaClient();
 
@@ -136,6 +137,7 @@ export default async function Home({
           >
             {t("title")}
           </h1>
+          <SearchBox isStatic={true} />
         </div>
         <NewsList news={news.news} isLoading={false} error={null} />
         {news.totalPages > 1 && (

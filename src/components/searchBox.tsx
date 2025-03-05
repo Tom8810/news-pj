@@ -1,22 +1,34 @@
-import { FormEvent } from "react";
+"use client";
+
+import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useLocale, useTranslations } from "next-intl";
 import { cn, sansLocaledClassName } from "@/lib/utils";
 import { Locale } from "@/lib/types";
-import { FiSearch, FiRefreshCcw } from "react-icons/fi"; // FontAwesomeのアイコンをインポートする
+import { FiSearch, FiRefreshCcw } from "react-icons/fi";
 
 type Props = {
-  searchTerm: string;
-  setSearchTerm: (newTerm: string) => void;
+  searchTerm?: string;
+  setSearchTerm?: (newTerm: string) => void;
+  isStatic?: boolean;
 };
 
-export const SearchBox = ({ searchTerm, setSearchTerm }: Props) => {
+export const SearchBox = ({
+  searchTerm = undefined,
+  setSearchTerm = undefined,
+  isStatic = false,
+}: Props) => {
   const router = useRouter();
   const t = useTranslations("search_box");
   const locale = useLocale();
+  const [searchTermForStatic, setSearchTermForStatic] = useState("");
 
   const handleSearch = (e: FormEvent) => {
     e.preventDefault();
+    if (isStatic) {
+      searchTerm = searchTermForStatic;
+    }
+    if (!searchTerm) return;
     const trimmedQuery = searchTerm.trim();
     if (!trimmedQuery) return;
 
@@ -25,8 +37,13 @@ export const SearchBox = ({ searchTerm, setSearchTerm }: Props) => {
   };
 
   const handleReset = () => {
-    if (searchTerm === "") return;
-    setSearchTerm(""); // 検索条件をリセット
+    if (isStatic) {
+      if (searchTermForStatic === "") return;
+      setSearchTermForStatic("");
+    } else if (setSearchTerm) {
+      if (searchTerm === "") return;
+      setSearchTerm("");
+    }
     router.push("/"); // リセット時にルートへ遷移
   };
 
@@ -38,8 +55,15 @@ export const SearchBox = ({ searchTerm, setSearchTerm }: Props) => {
       <input
         type="text"
         placeholder={t("placeholder")}
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        value={isStatic ? searchTermForStatic : searchTerm}
+        onChange={(e) => {
+          const newTerm = e.target.value;
+          if (isStatic) {
+            setSearchTermForStatic(newTerm);
+          } else if (setSearchTerm) {
+            setSearchTerm(newTerm);
+          }
+        }}
         className={cn(
           "flex-grow p-2 rounded-md bg-white border border-gray-300 text-black focus:outline-none focus:ring-2 focus:ring-gray-500 min-w-24",
           sansLocaledClassName(locale as Locale)
