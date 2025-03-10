@@ -1,0 +1,31 @@
+name: Deploy to Vercel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-attempts: 2
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Wait before deploy (10 seconds)
+        run: sleep 10
+
+      - name: Deploy to Vercel
+        run: |
+          npx vercel --prod --token $VERCEL_TOKEN --confirm
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
+      - name: Wait before retry (60 seconds)
+        if: failure()
+        run: sleep 60
